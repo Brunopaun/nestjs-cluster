@@ -6,7 +6,7 @@ const process = require(`process`);
 
 @Injectable()
 export class ClusterService {
-  clusterize(callback: any) {
+  static clusterize(callback: any) {
     const numCPUs = availableParallelism();
     if (cluster.isPrimary) {
       console.log(`Primary ${process.pid} is running`);
@@ -17,12 +17,10 @@ export class ClusterService {
 
       cluster.on('exit', (worker) => {
         console.log(`worker ${worker.process.pid} died`);
+        cluster.fork();
       });
     } else {
-      const workerPort = 3000 + cluster.worker.id;
-
-      callback(workerPort);
-      console.log(`Worker ${process.pid} started on port ${workerPort}`);
+      callback();
     }
   }
 }
