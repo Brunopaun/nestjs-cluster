@@ -5,8 +5,9 @@ import { ClusterService } from './cluster/cluster.service';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const initApp = async function () {
-    await app.listen(process.env.PORT ?? 3000);
+  const initApp = async function (port) {
+    process.env.PORT = port;
+    await app.listen(process.env.PORT);
   };
 
   const cluster = app.get(ClusterService);

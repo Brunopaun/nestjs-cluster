@@ -19,8 +19,10 @@ export class ClusterService {
         console.log(`worker ${worker.process.pid} died`);
       });
     } else {
-      callback();
-      console.log(`Worker ${process.pid} started`);
+      const workerPort = 3000 + cluster.worker.id;
+
+      callback(workerPort);
+      console.log(`Worker ${process.pid} started on port ${workerPort}`);
     }
   }
 }
